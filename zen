@@ -1,0 +1,90 @@
+local Window = Rayfield:CreateWindow({
+   Name = "Zen Hub",
+   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle = "Official Zen Hub",
+   LoadingSubtitle = "by Zen",
+   Theme = "ZenHub", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+
+   DisableRayfieldPrompts = false,
+   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+
+   ConfigurationSaving = {
+gurationSaving = {
+      Enabled = true,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "Zen Hub"
+   },
+
+   Discord = {
+      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
+      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+
+   KeySystem = false, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Untitled",
+      Subtitle = "Key System",
+      Note = "No method of obtaining the key is provided", -- Use this to tell the user how to get a key
+      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+
+})
+local HomeTab = Window:CreateTab("Home", nil) -- Title, Image
+
+local MainSection = Tab:CreateSection("Main")
+
+local Button = Aura KillTab:CreateButton({
+   Name = "Aura Kill",
+   Callback = function()
+   local auraKillEnabled = false
+local auraKillDistance = 100000
+
+MainTab:CreateToggle({
+    Name = "Aura Kill",
+    CurrentValue = false,
+    Flag = "AuraKill",
+    Callback = function(Value)
+        auraKillEnabled = Value
+        while auraKillEnabled do
+            for _, npc in pairs(workspace:GetChildren()) do
+                if npc:IsA("Model") and npc:FindFirstChild("Humanoid") then
+                    local distance = (npc.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+                    if distance <= auraKillDistance and npc.Team ~= game.Players.LocalPlayer.Team then
+                        npc.Humanoid.Health = 0
+                    end
+                end
+            end
+            wait(0.1)
+        end
+    end
+})
+   end,
+})
+
+local selectedDistance = 10  -- Default value
+
+local Slider = Tab:CreateSlider({
+   Name = "Distance",
+   Range = {0, 1000000},
+   Increment = 10,
+   Suffix = " Studs",  -- Added a space for better formatting
+   CurrentValue = selectedDistance,
+   Flag = "Stud",
+   Callback = function(Value)
+       selectedDistance = Value  -- Store the selected value
+       print("Distance set to:", selectedDistance)  -- Debugging print statement
+       
+       -- Example: Update ESP/Aura Kill/Auto-Collect based on selectedDistance
+       UpdateESP(selectedDistance)
+   end,
+})
+
+-- Example function to update ESP range (Modify as needed)
+function UpdateESP(distance)
+   -- Add logic here to update ESP settings based on distance
+   print("ESP Distance updated to:", distance)
+end
